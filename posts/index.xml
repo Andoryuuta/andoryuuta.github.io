@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Ando&#39;s thoughts</title>
-    <link>http://andoryuuta.github.io/</link>
-    <description>Recent content on Ando&#39;s thoughts</description>
+    <title>Posts on Ando&#39;s thoughts</title>
+    <link>http://andoryuuta.github.io/posts/</link>
+    <description>Recent content in Posts on Ando&#39;s thoughts</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 02 Nov 2019 12:49:29 -0700</lastBuildDate>
     
-	<atom:link href="http://andoryuuta.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://andoryuuta.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
