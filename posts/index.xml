@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Ando&#39;s thoughts</title>
@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Ando&#39;s thoughts</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 02 Nov 2019 12:49:29 -0700</lastBuildDate>
+    <lastBuildDate>Sun, 28 Jun 2020 12:05:25 -0400</lastBuildDate>
     
 	<atom:link href="http://andoryuuta.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Resolving an unusual wifi issue</title>
+      <link>http://andoryuuta.github.io/posts/diagnosing-an-unsual-wifi-issue/</link>
+      <pubDate>Sun, 28 Jun 2020 12:05:25 -0400</pubDate>
+      
+      <guid>http://andoryuuta.github.io/posts/diagnosing-an-unsual-wifi-issue/</guid>
+      <description>Resolving an intermittent wifi issue that I&amp;rsquo;ve been having for months, with an unusual conclusion.</description>
+    </item>
     
     <item>
       <title>A Look at Angelic47&#39;s PyProtect</title>
