@@ -200,19 +200,27 @@ Built with <a href="https://gohugo.io">Hugo</a> ❤️ <a href="https://github.c
       <input type="checkbox" id="tocToggle">
       <label for="tocToggle">Table of Content</label>
       
-          <nav id="TableOfContents"></nav>
+          <nav id="TableOfContents">
+  <ul>
+    <li><a href="#what">What?</a></li>
+    <li><a href="#why">Why?</a></li>
+    <li><a href="#why-1">Why!?</a></li>
+    <li><a href="#tldr">TL;DR</a></li>
+    <li><a href="#related">Related</a></li>
+  </ul>
+</nav>
       
     </div>
   
   
   <div class="post">
-    <h1 id="what">What?</h1>
+    <h2 id="what">What?</h2>
 <p>Late last year, I started experiencing some unusual intermittent connection issues on my Desktop. In general, I had a stable connection with average latency; however, at (seemingly) random times throughout the week, I would start experiencing sudden 2000ms+ latency spikes every couple of seconds.</p>
 <p><img src="bad_latency_ping_screenshot.png" alt="Screenshot of intermittent latency spikes while pinging google.com"></p>
 <p>This made all audio/video calling software unusable and most online games unplayable.</p>
 <p>This issue appeared to line up with my cross-country move from Washington State to South Carolina, so there were too many factors to easily pinpoint the issue. However, as it mainly only effected gaming and audio/video calls, I didn&rsquo;t put too much focus on it.</p>
 <p>Over the past couple of months I have (slowly) tried to figure out why this was happening, with little luck until today.</p>
-<h1 id="why">Why?</h1>
+<h2 id="why">Why?</h2>
 <p>Initially, the only thing that was clear about the issue was that it was limited to my desktop computer <strong>only</strong>. My laptop and other devices connected to the wifi did not have this issue, even when placed in the exact same spot as the desktop.</p>
 <p>First, I purchased a new, highly-reviewed, wifi adapter on Amazon. It didn&rsquo;t resolve the issue. It did, however, come with an offer for a free 64GB flash drive in exchange for a good reviews.</p>
 <p>(That was a pretty terrible purchase overall)
@@ -242,7 +250,7 @@ Built with <a href="https://gohugo.io">Hugo</a> ❤️ <a href="https://github.c
 <p>Nothing</p>
 <p>Then I ran MediBang Paint Pro.</p>
 <p><img src="another_lag_spike.png" alt="another ping lag spike"></p>
-<h1 id="why-1">WHY!?</h1>
+<h2 id="why-1">Why!?</h2>
 <p>Why the hell would digital painting software cause wifi lag spikes?</p>
 <p>As it turns out, there are <a href="https://www.reddit.com/r/medibangpaint/comments/br6ruw/medibang_interrupting_wifi_connection/">multiple</a> <a href="https://www.reddit.com/r/medibangpaint/comments/aj440q/help_medibang_makes_my_discord_calls_lag/">instances</a> <a href="https://www.reddit.com/r/medibangpaint/comments/enuucb/wifi/">of</a> <a href="https://twitter.com/SomeLizardGuy/status/1223575145597423616">people</a> <a href="https://www.deviantart.com/trelock/journal/Need-Help-Medibang-s-disdain-for-my-Wifi-606655928">complaining</a> about this issue with MBPP.</p>
 <p>If we take a quick look with ProcMon, we can see that it&rsquo;s definitely doing something odd.</p>
@@ -258,9 +266,9 @@ Built with <a href="https://gohugo.io">Hugo</a> ❤️ <a href="https://github.c
 <p>If I understand correctly, any Qt5 (&lt;5.14) application using <code>QNetworkAccessManager</code> will check for wifi interface changes every 10 seconds for the purpose of <a href="https://doc.qt.io/qt-5/bearer-management.html">bearer management</a>, causing massive lag spikes and/or packet drops entirely. Even if <code>QNetworkAccessManager</code> is instantiated internally for something simple, like an HTTP request.</p>
 <p>I suppose the workaround is simple enough, set the environment variable <code>QT_BEARER_POLL_TIMEOUT</code> to <code>-1</code>.</p>
 <p>I just wish I knew that around 8 months ago.</p>
-<h1 id="tldr">TL;DR</h1>
+<h2 id="tldr">TL;DR</h2>
 <p>Qt5 has been crippling my wifi system-wide for past 7-8 months, just by running MediBang Paint Pro. I stupidly attributed it to many other things, because, honestly, who would expect Qt to be the cause of their system-wide wifi problems?</p>
-<h1 id="related">Related</h1>
+<h2 id="related">Related</h2>
 <ul>
 <li><a href="https://invent.kde.org/graphics/krita/-/commit/d4eaaa63af8dc769acf79cd497e741f1de9be31b">https://invent.kde.org/graphics/krita/-/commit/d4eaaa63af8dc769acf79cd497e741f1de9be31b</a></li>
 <li><a href="https://github.com/sqlitebrowser/sqlitebrowser/issues/1209">https://github.com/sqlitebrowser/sqlitebrowser/issues/1209</a></li>
