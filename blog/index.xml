@@ -2,22 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Andrew&#39;s Blog</title>
-    <link>http://ando.fyi/</link>
+    <link>http://ando.fyi/blog/</link>
     <description>Recent content on Andrew&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 28 Jun 2020 12:05:25 -0400</lastBuildDate><atom:link href="http://ando.fyi/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>About</title>
-      <link>http://ando.fyi/about/</link>
-      <pubDate>Sat, 03 Jul 2021 20:28:03 -0700</pubDate>
-      
-      <guid>http://ando.fyi/about/</guid>
-      <description>Hi, I&amp;rsquo;m Andrew Gutekanst.
-I&amp;rsquo;m interested in a bit of everything, but primarily focused towards reverse-engineering and low-level development.
- Github: Andoryuuta Twitter: AndoryuuRE Email: &amp;quot;{firstname}.{lastname}@gmail.com&amp;quot;  Or as Unicode confusables: ɑոԁrеɯ.ɡυtekɑոѕt@ɡmɑil.com Retype this email address manually. Don&amp;rsquo;t copy+paste!    </description>
-    </item>
-    
+    <lastBuildDate>Sun, 28 Jun 2020 12:05:25 -0400</lastBuildDate><atom:link href="http://ando.fyi/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Resolving an unusual wifi issue</title>
       <link>http://ando.fyi/blog/diagnosing-an-unsual-wifi-issue/</link>
