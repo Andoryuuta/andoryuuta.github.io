@@ -95,6 +95,15 @@ a {
     margin-bottom: 5rem;
 }
 
+@media only screen 
+and (min-device-width: 320px) 
+and (max-device-width: 480px) {
+    .user-content-container {
+        /*TODO(Andoryuuta): Why does this change the size?*/
+        align-items: unset;
+    }
+}
+
 .user-content {
     width: 56vw;
     /* margin: 2rem 30rem; */
@@ -135,6 +144,7 @@ a {
 
 .user-content code {
     font-family: consolas !important;
+    font-size: initial;
 }
 
 .user-content code:not([class]) {
