@@ -53,13 +53,13 @@ Weird. Oh well.</p>
 <img src="normal_curl.png" alt="Screenshot curl output of the URL. The site returned a 404 &ldquo;Not Found&rdquo;"></p>
 <p>My first instinct here was that <em>something</em> was checking if the client was the &ldquo;expected&rdquo; browser somehow. For example, it could be checking if the <code>User-Agent</code>, <code>Referer</code>, or <code>Accept</code> headers matches what would be sent from Chrome, <a href="https://daniel.haxx.se/blog/2022/09/02/curls-tls-fingerprint/">TLS fingerprinting</a>, etc.</p>
 <p>Thankfully it was one of my first guesses. Adding the <code>Referer</code> of <code>https://www.google.com/</code> did the trick:
-<img src="curl_referer_difference.png" alt="Screenshot curl output of the URL with the google referer header. The site returned a 302 &ldquo;Found&rdquo; redirect to the spam site"></p>
+<img src="curl_referer_difference.png" alt="Screenshot curl output of the URL with the Google referer header. The site returned a 302 &ldquo;Found&rdquo; redirect to the spam site"></p>
 <p>Admittedly, at this point I was a <em>tiny</em> bit worried that this was something on my local machine, so I opted for the most optimal solution for checking: Sending my brother an unprompted discord message asking him to <code>curl</code> a suspicious URL with no context. Sadly it turned out that he <em>did</em>, in fact, want context.</p>
 <p>How unfortunate.</p>
-<p><img src="discord_request.png" alt="Discord chat between my brother and I. Ando(me):&ldquo;could you curl this for me?&rdquo;, slimsag(brother):&ldquo;call?&rdquo;"></p>
+<p><img src="discord_request.png" alt="A Discord chat between my brother and I. Ando(me):&ldquo;could you curl this for me?&rdquo;, slimsag(brother):&ldquo;call?&rdquo;"></p>
 <p>Regardless, I eventually convinced him to run it and confirmed it wasn&rsquo;t an issue on my end.</p>
 <p>Now at this point, I knew that it was happening on their server(s), and under which conditions it happened (coming from Google Search results), but I had no way of figuring out <em>why</em> it was happening. (e.g. something in their reverse proxy, some PHP code, etc)</p>
-<p>The only indicator I had here was the very unusual <code>haircki</code> cookie that was being set when visiting the regular page. It <em>could</em> technically be legitimate, but it seemed extremely out-of-place for a uni website.</p>
+<p>The only indicator I had was the very unusual <code>haircki</code> cookie that was being set when visiting the regular page. It <em>could</em> technically be legitimate, but it seemed extremely out-of-place for a uni website.</p>
 <p>By sheer luck, a <a href="https://sourcegraph.com/search?q=context:global+haircki&amp;patternType=standard">sourcegraph search</a> turned up a result for <code>haircki</code>, which lead me to a GitHub repo containing WordPress malware samples:
 <img src="sourcegraph_haircki_search.png" alt="sourcegraph.com search results for &ldquo;haircki&rdquo;, showing multiple GitHub repositories containing the string"></p>
 <p><a href="https://github.com/stefanpejcic/wordpress-malware/blob/master/01.06.2021/index.php">https://github.com/stefanpejcic/wordpress-malware/blob/master/01.06.2021/index.php</a></p>
@@ -71,7 +71,7 @@ Weird. Oh well.</p>
 <p>As such, here are the following institutions I&rsquo;ve found with compromised sites / pdf hosting at the time of writing (2022-09-07):</p>
 <p>Compromised sites:</p>
 <ul>
-<li><strong>University of California Santa Cruz, United Status</strong>
+<li><strong>University of California Santa Cruz, United States</strong>
 <ul>
 <li>httpx://digitalkarnak.ucsc(dot)edu/dsbptweight/how-many-fcel-keto-pills-should-i-take-a-day</li>
 </ul>
@@ -94,7 +94,7 @@ Weird. Oh well.</p>
 <li>httpx://library.iibt(dot)edu.au/Celebrity_Slim_Program_Guide/redir_esc?o=W4Q2L0</li>
 </ul>
 </li>
-<li><strong>Johns Hopkins University, Whiting School of Engineering, United Status</strong>
+<li><strong>Johns Hopkins University, Whiting School of Engineering, United States</strong>
 <ul>
 <li>httpx://www.clsp.jhu(dot)edu/wp-content/uploads/2015/10/WS12-Summer-SentimentData.pdf</li>
 </ul>
@@ -157,7 +157,7 @@ Weird. Oh well.</p>
 <li>httpx://gsb.almau(dot)edu.kz/LdietjwTH/does-distance-running-burn-fat-K7J/</li>
 </ul>
 </li>
-<li><strong>University of Georgia, United Status</strong>
+<li><strong>University of Georgia, United States</strong>
 <ul>
 <li>httpx://ifp.uga(dot)edu/LVN-UdXsLk/keto-yOda-ultra-fat-burn-pills</li>
 </ul>
@@ -165,15 +165,15 @@ Weird. Oh well.</p>
 </ul>
 <h1 id="those-are-just-hackers-though">Those are just hackers though</h1>
 <p><em>&ldquo;Okay, sure, the sites were hacked. That doesn&rsquo;t make the universities less credible. That&rsquo;s just dumb.&rdquo;</em></p>
-<p>You know what, fair. Maybe it&rsquo;s unreasonable to say that all .edu sites are non-credible because a few of them had poor maintenance/security. This was not something that the univeristies would ever willingly advertise, and it was out of there control.</p>
+<p>You know what, fair. Maybe it&rsquo;s unreasonable to say that all .edu sites are non-credible because a few of them had poor maintenance/security. This was not something that the universities would ever willingly advertise, and it was out of their control.</p>
 <p>In fact, while looking into these compromised sites, I found a great paper accessible via Penn State University&rsquo;s CiteSeerX instance:
 <img src="parasite_hosting_paper_screenshot.png" alt="Screenshot of the &ldquo;Fighting Parasite Hosting: Identifying and Mitigating Unauthorized Ads on Your Webserver&rdquo; paper by authors: Shuang Hao, Adam Arrowood, Xinyu Xing, Nick Feamster">
 <a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.711.1013&amp;rep=rep1&amp;type=pdf">https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.711.1013&amp;rep=rep1&amp;type=pdf</a></p>
 <p>In this paper, they describe the exact behavior of these compromised sites only accessible via certain IPs/<code>User-Agent</code> header(s)/<code>Referrer</code> header(s).</p>
 <p>It&rsquo;s great to see this paper on accessible via Penn State University&rsquo;s domain, as I found no instance of this malware on their site while searching.</p>
-<p>It&rsquo;s only slightly unfortunate that there was no need for any malware, as the fat burner pills are advertised in the Penn State University Collegian paper anyways though:</p>
+<p>It&rsquo;s only slightly unfortunate that there was no need for any malware, as the fat burner pills are advertised in the Penn State University Collegian paper anyway:</p>
 <p><a href="https://www.collegian.psu.edu/studentadvice/5-best-fat-burners-for-women-2022-female-fat-burning-pills/article_6082d0f4-7931-11ec-9b80-a3411d9937dd.html">https://www.collegian.psu.edu/studentadvice/5-best-fat-burners-for-women-2022-female-fat-burning-pills/article_6082d0f4-7931-11ec-9b80-a3411d9937dd.html</a>
-<img src="psu_collegian_article.png" alt="Penn State University Collegian paper article adverstising the &ldquo;5 best fat burners for women&rdquo;"></p>
+<img src="psu_collegian_article.png" alt="Penn State University Collegian paper article advertising the &ldquo;5 best fat burners for women&rdquo;"></p>
 <p>Oh well.</p>
 
 
