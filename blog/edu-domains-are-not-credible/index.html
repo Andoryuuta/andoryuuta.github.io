@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    
+    
+    <title>Andrew&#39;s Blog - The lost credibility of .edu domains</title>
+</head><body><div class="header-container">
+    <div>
+        
+        <img class="header-image" src="/img/logo.png"/>
+    </div>
+</div>
+
+<div class="menu-container">
+    <ul>
+        
+        <li><a href="/"> Home</a></li>
+        
+        <li><a href="/blog/"> Blog</a></li>
+        
+        <li><a href="/about/"> About</a></li>
+        
+    </ul>
+</div><div class="user-content-container">
+            <div class="user-content">
+<div class="column-centered">
+    <h2>The lost credibility of .edu domains</h2>
+</div>
+
+<p><strong>NOTE: this was originally written in 2022, but never finished. This was updated and published in 2023, but some links are now out-of-date, etc.</strong></p>
+<p>It&rsquo;s quite difficult to find real, credible, information on the internet nowadays.</p>
+<p>Something that has made this easier (for me, at least) has been to search specifically for content on <code>.edu</code> domains, since that TLD is restricted to accredited institutions. This is as simple as prefixing your Google search with <code>inurl:edu </code>.</p>
+<p>I&rsquo;ve been doing this for a while with no issues, so you can imagine my surprise when I recently tried to find information about some &ldquo;fat burner&rdquo; pills that were being sold on Amazon and searched for <code>inurl:edu nobi fat burner</code> in the off-chance it was mentioned in some study/paper.</p>
+<p><img src="first_search_results.png" alt="Screenshot of google search results showing .edu websites with advert titles, such as &ldquo;5 Best Fat Burners for Women 2022&rdquo;"></p>
+<p>Dang! If UMass Med, Penn State, <em>and</em> UC Santa Cruz are recommending these things, then they must be safe and effective.</p>
+<p>However, just to do my due diligence, I should probably at least click on the first link and see what it says about-</p>
+<p>Oh, that&rsquo;s odd.</p>
+<p>This doesn&rsquo;t look like a university website?</p>
+<p><img src="redirected_first_page.png" alt="Screenshot of page redirected to by .edu site. The page shows the &ldquo;Fox News&rdquo; logo and contains an article about a &ldquo;No-Excercise Skinny Pill&rdquo;. The page is hosted on afnethealthy.com"></p>
+<p>Maybe I clicked the wrong one, let me go back and copy and paste the URL.</p>
+<p>Huh, a 404 page this time?
+<img src="umassmed_real_site_404.png" alt="Screenshot of the 404 &ldquo;Not Found&rdquo; page on the real UMass Med website">
+Weird. Oh well.</p>
+<p>If three university sites are recommending these entirely unregulated pills to me, then they must be good!</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h1 id="whats-happening-here">What&rsquo;s happening here?</h1>
+<p>I decided to look a little bit deeper into the first search result.</p>
+<p>First, I took the raw URL and <code>curl</code>ed it, but I got a 404. For some reason, it didn&rsquo;t redirect to the spam site.
+<img src="normal_curl.png" alt="Screenshot curl output of the URL. The site returned a 404 &ldquo;Not Found&rdquo;"></p>
+<p>My first instinct here was that <em>something</em> was checking if the client was the &ldquo;expected&rdquo; browser somehow. For example, it could be checking if the <code>User-Agent</code>, <code>Referer</code>, or <code>Accept</code> headers matches what would be sent from Chrome, <a href="https://daniel.haxx.se/blog/2022/09/02/curls-tls-fingerprint/">TLS fingerprinting</a>, etc.</p>
+<p>Thankfully it was one of my first guesses. Adding the <code>Referer</code> of <code>https://www.google.com/</code> did the trick:
+<img src="curl_referer_difference.png" alt="Screenshot curl output of the URL with the google referer header. The site returned a 302 &ldquo;Found&rdquo; redirect to the spam site"></p>
+<p>Admittedly, at this point I was a <em>tiny</em> bit worried that this was something on my local machine, so I opted for the most optimal solution for checking: Sending my brother an unprompted discord message asking him to <code>curl</code> a suspicious URL with no context. Sadly it turned out that he <em>did</em>, in fact, want context.</p>
+<p>How unfortunate.</p>
+<p><img src="discord_request.png" alt="Discord chat between my brother and I. Ando(me):&ldquo;could you curl this for me?&rdquo;, slimsag(brother):&ldquo;call?&rdquo;"></p>
+<p>Regardless, I eventually convinced him to run it and confirmed it wasn&rsquo;t an issue on my end.</p>
+<p>Now at this point, I knew that it was happening on their server(s), and under which conditions it happened (coming from Google Search results), but I had no way of figuring out <em>why</em> it was happening. (e.g. something in their reverse proxy, some PHP code, etc)</p>
+<p>The only indicator I had here was the very unusual <code>haircki</code> cookie that was being set when visiting the regular page. It <em>could</em> technically be legitimate, but it seemed extremely out-of-place for a uni website.</p>
+<p>By sheer luck, a <a href="https://sourcegraph.com/search?q=context:global+haircki&amp;patternType=standard">sourcegraph search</a> turned up a result for <code>haircki</code>, which lead me to a GitHub repo containing WordPress malware samples:
+<img src="sourcegraph_haircki_search.png" alt="sourcegraph.com search results for &ldquo;haircki&rdquo;, showing multiple GitHub repositories containing the string"></p>
+<p><a href="https://github.com/stefanpejcic/wordpress-malware/blob/master/01.06.2021/index.php">https://github.com/stefanpejcic/wordpress-malware/blob/master/01.06.2021/index.php</a></p>
+<p>After briefly looking over that sample from another site, I feel confident in saying that it produces the same behavior of search engine link hijacking that I&rsquo;m seeing on the <code>umassmed.edu</code> site.</p>
+<p>The answer here turned out to be less interesting than I thought, just another case of websites running vulnerable versions of WordPress and/or WP plugins.</p>
+<h1 id="how-widespread-is-it">How widespread is it?</h1>
+<p>Given what I&rsquo;ve shown so far, you would be justified if your first comment was:</p>
+<p><em>&ldquo;You&rsquo;ve only provided three example sites, I&rsquo;d hardly call that representative of all .edu domains&rdquo;</em></p>
+<p>As such, here are the following institutions I&rsquo;ve found with compromised sites / pdf hosting at the time of writing (2022-09-07):</p>
+<p>Compromised sites:</p>
+<ul>
+<li><strong>University of California Santa Cruz, United Status</strong>
+<ul>
+<li>httpx://digitalkarnak.ucsc(dot)edu/dsbptweight/how-many-fcel-keto-pills-should-i-take-a-day</li>
+</ul>
+</li>
+<li><strong>Bangladesh Army International University of Science and Technology, Bangladesh</strong>
+<ul>
+<li>httpx://baiust(dot)edu.bd/VCHdvwg/diy-diet-pill-60b8c4d</li>
+</ul>
+</li>
+<li><strong>Thai Nguyen University, Vietnam</strong>
+<ul>
+<li>httpx://mysite.tnu(dot)edu.vn/renlearn/A49749f-as-seen-on-tv-diet-pill</li>
+</ul>
+</li>
+</ul>
+<p>Compromised PDF hosting:</p>
+<ul>
+<li><strong>The International Institute of Business &amp; Technology, Australia</strong>
+<ul>
+<li>httpx://library.iibt(dot)edu.au/Celebrity_Slim_Program_Guide/redir_esc?o=W4Q2L0</li>
+</ul>
+</li>
+<li><strong>Johns Hopkins University, Whiting School of Engineering, United Status</strong>
+<ul>
+<li>httpx://www.clsp.jhu(dot)edu/wp-content/uploads/2015/10/WS12-Summer-SentimentData.pdf</li>
+</ul>
+</li>
+<li><strong>University of Port Harcourt, Nigeria</strong>
+<ul>
+<li>httpx://uniport(dot)edu.ng/herbalife_pitch_2014_free/trackid=7228393 (requires Referer)</li>
+</ul>
+</li>
+<li><strong>School of Environmental Science and Management, Nepal</strong>
+<ul>
+<li>httpx://schems(dot)edu.np/Idiots_Guide_To_Loosing_Weight/redir_esc?n=O0C9L9</li>
+</ul>
+</li>
+<li><strong>Unknown institution, Uruguay</strong>
+<ul>
+<li>httpx://mail.elijoestudiar(dot)edu.uy/food-what-the-heck-should-i-eat/?view_all.cgi=DikTnZPit5OE&amp;sitesec=reviews&amp;redir_esc=y</li>
+</ul>
+</li>
+<li><strong>University of Arkansas for Medical Sciences, United States</strong>
+<ul>
+<li>httpx://neuroscience.uams(dot)edu/Type-2-Diabetes-Can-Be-Reversed/redir_esc?n=Q9D6R4</li>
+</ul>
+</li>
+<li><strong>The Dow University of Health Sciences, Pakistan</strong>
+<ul>
+<li>httpx://vcon.duhs(dot)edu.pk/Weight_And_Body_Solutions/redir_esc?k=Y3C4N1</li>
+</ul>
+</li>
+</ul>
+<p>Update (2023-07-29):</p>
+<ul>
+<li><strong>University of Pittsburgh, United States</strong>
+<ul>
+<li>httpx://dom.pitt(dot)edu/rNob-CWeEr/fat-burning-pills-that-actually-work-McK</li>
+</ul>
+</li>
+<li><strong>Program for Infant Toddler Care, United States</strong>
+<ul>
+<li>httpx://pitc(dot)edu/bdietzFFN/fat-burner-Oh4-gnc-review/</li>
+</ul>
+</li>
+<li><strong>University of Georgia College of Veterinary Medicine, United States</strong>
+<ul>
+<li>httpx://vet.uga(dot)edu/NwII-CnDyA/best-drinks-to-dYVyq-lose-belly-fat</li>
+</ul>
+</li>
+<li><strong>University of Namibia, Namibia</strong>
+<ul>
+<li>httpx://library.unam(dot)edu.na/keto-cgikx/personality-change-xtxvo-after-weight-loss/</li>
+</ul>
+</li>
+<li><strong>Jindal Institute of Behavioural Sciences, India</strong>
+<ul>
+<li>httpx://jibs(dot)edu.in/DzdietKXK/evlution-fat-burner-cbd-oil/</li>
+</ul>
+</li>
+<li><strong>Almaty Management University, Kazakhstan</strong>
+<ul>
+<li>httpx://gsb.almau(dot)edu.kz/LdietjwTH/does-distance-running-burn-fat-K7J/</li>
+</ul>
+</li>
+<li><strong>University of Georgia, United Status</strong>
+<ul>
+<li>httpx://ifp.uga(dot)edu/LVN-UdXsLk/keto-yOda-ultra-fat-burn-pills</li>
+</ul>
+</li>
+</ul>
+<h1 id="those-are-just-hackers-though">Those are just hackers though</h1>
+<p><em>&ldquo;Okay, sure, the sites were hacked. That doesn&rsquo;t make the universities less credible. That&rsquo;s just dumb.&rdquo;</em></p>
+<p>You know what, fair. Maybe it&rsquo;s unreasonable to say that all .edu sites are non-credible because a few of them had poor maintenance/security. This was not something that the univeristies would ever willingly advertise, and it was out of there control.</p>
+<p>In fact, while looking into these compromised sites, I found a great paper accessible via Penn State University&rsquo;s CiteSeerX instance:
+<img src="parasite_hosting_paper_screenshot.png" alt="Screenshot of the &ldquo;Fighting Parasite Hosting: Identifying and Mitigating Unauthorized Ads on Your Webserver&rdquo; paper by authors: Shuang Hao, Adam Arrowood, Xinyu Xing, Nick Feamster">
+<a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.711.1013&amp;rep=rep1&amp;type=pdf">https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.711.1013&amp;rep=rep1&amp;type=pdf</a></p>
+<p>In this paper, they describe the exact behavior of these compromised sites only accessible via certain IPs/<code>User-Agent</code> header(s)/<code>Referrer</code> header(s).</p>
+<p>It&rsquo;s great to see this paper on accessible via Penn State University&rsquo;s domain, as I found no instance of this malware on their site while searching.</p>
+<p>It&rsquo;s only slightly unfortunate that there was no need for any malware, as the fat burner pills are advertised in the Penn State University Collegian paper anyways though:</p>
+<p><a href="https://www.collegian.psu.edu/studentadvice/5-best-fat-burners-for-women-2022-female-fat-burning-pills/article_6082d0f4-7931-11ec-9b80-a3411d9937dd.html">https://www.collegian.psu.edu/studentadvice/5-best-fat-burners-for-women-2022-female-fat-burning-pills/article_6082d0f4-7931-11ec-9b80-a3411d9937dd.html</a>
+<img src="psu_collegian_article.png" alt="Penn State University Collegian paper article adverstising the &ldquo;5 best fat burners for women&rdquo;"></p>
+<p>Oh well.</p>
+
+
+
+            </div>
+        </div></body>
+</html>

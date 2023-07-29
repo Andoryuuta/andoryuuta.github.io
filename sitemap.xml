@@ -2,15 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://ando.fyi/about/</loc>
-    <lastmod>2021-07-03T20:28:03-07:00</lastmod>
-  </url><url>
     <loc>http://ando.fyi/blog/</loc>
-    <lastmod>2020-06-28T12:05:25-04:00</lastmod>
-    <priority>0</priority>
+    <lastmod>2022-09-07T22:02:30-04:00</lastmod>
   </url><url>
     <loc>http://ando.fyi/</loc>
-    <lastmod>2020-06-28T12:05:25-04:00</lastmod>
+    <lastmod>2022-09-07T22:02:30-04:00</lastmod>
+  </url><url>
+    <loc>http://ando.fyi/blog/edu-domains-are-not-credible/</loc>
+    <lastmod>2022-09-07T22:02:30-04:00</lastmod>
+  </url><url>
+    <loc>http://ando.fyi/about/</loc>
+    <lastmod>2021-07-03T20:28:03-07:00</lastmod>
   </url><url>
     <loc>http://ando.fyi/blog/diagnosing-an-unsual-wifi-issue/</loc>
     <lastmod>2020-06-28T12:05:25-04:00</lastmod>
